@@ -21,9 +21,10 @@ email varchar(100) not null,
 codigo_oficina varchar(10),
 foreign key (codigo_oficina) references oficina(codigo_oficina),
 codigo_jefe int(11),
+foreign key (codigo_jefe) references empleado(codigo_empleado),
 puesto varchar(50)
 );
-
+select * from empleado;
 create table cliente(
 codigo_cliente int(38) not null primary key,
 nombre_cliente varchar(50) not null,
@@ -98,7 +99,9 @@ INSERT INTO oficina VALUES ('SFC-USA','San Francisco','EEUU','CA','94080','+1 65
 INSERT INTO oficina VALUES ('SYD-AU','Sydney','Australia','APAC','NSW 2010','+61 2 9264 2451','5-11 Wentworth Avenue','Floor #2');
 INSERT INTO oficina VALUES ('TAL-ES','Talavera de la Reina','España','Castilla-LaMancha','45632','+34 925 867231','Francisco Aguirre, 32','5º piso (exterior)');
 INSERT INTO oficina VALUES ('TOK-JP','Tokyo','Japón','Chiyoda-Ku','102-8578','+81 33 224 5000','4-1 Kioicho','');
+
 select * from oficina;
+
 -- insert empleado
 
 INSERT INTO empleado VALUES (1,'Marcos','Magaña','Perez','3897','marcos@jardineria.es','TAL-ES',NULL,'Director General');
@@ -203,6 +206,7 @@ INSERT INTO pago VALUES (30,'PayPal','ak-std-000024','2009-01-16',7863);
 INSERT INTO pago VALUES (35,'PayPal','ak-std-000025','2007-10-06',3321);
 INSERT INTO pago VALUES (38,'PayPal','ak-std-000026','2006-05-26',1171);
 
+select * from pago;
 -- insert pedido
 
 INSERT INTO pedido VALUES (1,'2006-01-17','2006-01-19','2006-01-19','Entregado','Pagado a plazos',5);
@@ -320,6 +324,9 @@ INSERT INTO pedido VALUES (125,'2009-02-14','2009-02-20',NULL,'Rechazado','el pr
 INSERT INTO pedido VALUES (126,'2009-05-13','2009-05-15','2009-05-20','Pendiente',NULL,30);
 INSERT INTO pedido VALUES (127,'2009-04-06','2009-04-10','2009-04-10','Entregado',NULL,30);
 INSERT INTO pedido VALUES (128,'2008-11-10','2008-12-10','2008-12-29','Rechazado','El pedido ha sido rechazado por el cliente por el retraso en la entrega',38);
+
+select * from pedido;
+
 -- insert producto
 INSERT INTO producto VALUES ('11679','Sierra de Poda 400MM','Herramientas','0,258','HiperGarden Tools','Gracias a la poda se consigue manipular un poco la naturaleza, dándole la forma que más nos guste. Este trabajo básico de jardinería también facilita que las plantas crezcan de un modo más equilibrado, y que las flores y los frutos vuelvan cada año con regularidad. Lo mejor es dar forma cuando los ejemplares son jóvenes, de modo que exijan pocos cuidados cuando sean adultos. Además de saber cuándo y cómo hay que podar, tener unas herramientas adecuadas para esta labor es también de vital importancia.',15,14,11);
 INSERT INTO producto VALUES ('21636','Pala','Herramientas','0,156','HiperGarden Tools','Palas de acero con cresta de corte en la punta para cortar bien el terreno. Buena penetración en tierras muy compactas.',15,14,13);
@@ -598,6 +605,7 @@ INSERT INTO producto VALUES ('OR-250','Yucca Jewel','Ornamentales','80 - 105','V
 INSERT INTO producto VALUES ('OR-251','Zamia Furfuracaea','Ornamentales','90 - 110','Viveros EL OASIS','',15,168,134);
 INSERT INTO producto VALUES ('OR-99','Mimosa DEALBATA Gaulois Astier  ','Ornamentales','200-225','Viveros EL OASIS','Acacia dealbata. Nombre común o vulgar: Mimosa fina, Mimosa, Mimosa común, Mimosa plateada, Aromo francés. Familia: Mimosaceae. Origen: Australia, Sureste, (N. G. del Sur y Victoria). Arbol de follaje persistente muy usado en parques por su atractiva floración amarilla hacia fines del invierno. Altura: de 3 a 10 metros generalmente. Crecimiento rápido. Follaje perenne de tonos plateados, muy ornamental. Sus hojas son de textura fina, de color verde y sus flores amarillas que aparecen en racimos grandes. Florece de Enero a Marzo (Hemisferio Norte). Legumbre de 5-9 cm de longitud, recta o ligeramente curvada, con los bordes algo constreñidos entre las semillas, que se disponen en el fruto longitudinalmente...',100,14,11);
 
+select * from producto ;
 -- insert detalle de pedido
 INSERT INTO detalle_pedido VALUES (1,'FR-67',10,70,3);
 INSERT INTO detalle_pedido VALUES (1,'OR-127',40,4,1);
@@ -917,7 +925,8 @@ INSERT INTO detalle_pedido VALUES (124,'FR-67',10,70,1);
 INSERT INTO detalle_pedido VALUES (125,'FR-67',10,70,1);
 INSERT INTO detalle_pedido VALUES (126,'FR-67',10,70,1);
 INSERT INTO detalle_pedido VALUES (127,'FR-67',10,70,1);
-
+ select * from detalle_pedido ;
+ 
 -- gama
 
 INSERT INTO gama_producto VALUES ('Herbaceas','Plantas para jardin decorativas',NULL,NULL);
@@ -925,6 +934,8 @@ INSERT INTO gama_producto VALUES ('Herramientas','Herramientas para todo tipo de
 INSERT INTO gama_producto VALUES ('Aromáticas','Plantas aromáticas',NULL,NULL);
 INSERT INTO gama_producto VALUES ('Frutales','Árboles pequeños de producción frutal',NULL,NULL);
 INSERT INTO gama_producto VALUES ('Ornamentales','Plantas vistosas para la decoración del jardín',NULL,NULL);
+
+select * from gama_producto;
 
 -- 1. Devuelve un listado con el código de oficina y la ciudad donde hay oficinas.
 select codigo_oficina,ciudad from oficina;
@@ -971,22 +982,37 @@ select * from producto where gama ='Ornamentales' and cantidad_en_stock='100' or
 -- 15. Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
  select * from cliente  where ciudad='Madrid' and codigo_empleado_rep_ventas in (11,30);
  
- 
+ -- 16. Devuelve un listado con el nombre, apellidos y email de los empleados cuyo jefe tiene un código de jefe igual a 7.
+ select nombre,apellido1, apellido2,email from empleado where codigo_jefe= 7;
  
  -- consultas multitabla (Composición interna) (OPCIONAL)
  -- Resuelva todas las consultas mediante INNER JOIN y NATURAL JOIN.
  
  -- 1. Obtén un listado con el nombre de cada cliente y el nombre y apellido de su representante de ventas.
  select nombre_cliente,nombre,apellido1, apellido2 from cliente c inner join empleado e  on c.codigo_empleado_rep_ventas= e.codigo_empleado;
+ 
  -- 2. Muestra el nombre de los clientes que hayan realizado pagos junto con el nombre de sus representantes de ventas
  select nombre_cliente,nombre from  pago p inner join cliente c  on p.codigo_cliente=c.codigo_cliente inner join empleado e  on c.codigo_empleado_rep_ventas= e.codigo_empleado;
+ 
  -- 3. Devuelve el nombre de los clientes que han hecho pagos y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
  select c.nombre_cliente,e.nombre, e.apellido1, ofi.ciudad as ciudad_oficina from  pago p inner join cliente c  on p.codigo_cliente=c.codigo_cliente inner join empleado e  on c.codigo_empleado_rep_ventas= e.codigo_empleado inner join oficina ofi  on e.codigo_oficina = ofi.codigo_oficina;
+ 
  -- 4. Lista la dirección de las oficinas que tengan clientes en Fuenlabrada
  select c.nombre_cliente,e.nombre,e.apellido1, e.apellido2,ofi.ciudad as ciudad_oficina from cliente c inner join empleado e  on c.codigo_empleado_rep_ventas= e.codigo_empleado inner join oficina ofi  on e.codigo_oficina = ofi.codigo_oficina where c.ciudad='Fuenlabrada';
+ 
  -- 5. Devuelve el nombre de los clientes y el nombre de sus representantes junto con la ciudad de la oficina a la que pertenece el representante.
  select c.nombre_cliente,e.nombre,e.apellido1, e.apellido2,ofi.ciudad as ciudad_oficina from cliente c inner join empleado e  on c.codigo_empleado_rep_ventas= e.codigo_empleado inner join oficina ofi  on e.codigo_oficina = ofi.codigo_oficina;
+ 
  -- 6.Devuelve un listado de las diferentes gamas de producto que ha comprado cada cliente.
  select nombre_cliente, gama from cliente natural join gama_producto;
+ 
  -- 7. Devuelve el nombre de los clientes a los que no se les ha entregado a tiempo un pedido.
  select nombre_cliente, fecha_esperada, fecha_entrega from cliente c inner join pedido p on c.codigo_cliente=p.codigo_cliente where fecha_esperada > fecha_entrega;
+ 
+ 
+-- 8. Devuelve un listado con el nombre de los empleados junto con el nombre de sus jefes.
+select  e.nombre as nombre_empleado, j.nombre as nombre_jefe  from empleado j inner join empleado e on j.codigo_empleado=e.codigo_jefe;
+
+-- 9. Devuelve un listado que muestre el nombre de cada empleados, el nombre de su jefe y el nombre del jefe de sus jefe
+select  e.nombre as nombre_empleado, j.nombre as nombre_jefe, j2.nombre as nombre_jefe2  from empleado j inner join empleado e on j.codigo_empleado=e.codigo_jefe inner join empleado j2 on j.codigo_jefe=j2.codigo_empleado ; -- solo muestras aquellos que tiene jefe y el jefe de jefe.
+select  e.nombre as nombre_empleado, j.nombre as nombre_jefe, j2.nombre as nombre_jefe2  from empleado j left join empleado e on j.codigo_empleado=e.codigo_jefe left join empleado j2 on j.codigo_jefe=j2.codigo_empleado ;-- muetra todo aunque en algunos caso de null porque no se cumple correctamente lo anterior.
